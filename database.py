@@ -1,4 +1,5 @@
 import sqlalchemy as db
+from sqlalchemy import MetaData, Table, Column
 
 
 class Database():
@@ -16,6 +17,13 @@ class Database():
 
     def saveData(self, customer):
         self.connection.execute(f"""INSERT INTO customer(name, age, email, address, zip_code) VALUES('{customer.name}', '{customer.age}', '{customer.email}', '{customer.address}', '{customer.zip_code}')""")
+
+    def fetchUserByName(self):
+        meta = MetaData()
+        customer = Table('customer', meta, Column('name'), Column('age'), Column('email'), Column('address'), Column('zip_code'))
+        data = self.connection.execute(customer.select())
+        for cust in data:
+            print(cust)
 
 
 class Customer():
